@@ -8,9 +8,24 @@ app.use(bodyParser.json());
 
 app.use(express.static(process.cwd() + '/views'));
 
+function getIp(header) {
+  return header.substring(0, header.indexOf(','));
+}
+
+function getLanguage(header) {
+  return header.substring(0, header.indexOf(','));
+}
+
+
 app.get('/api/whoami', (req, res) => {
-  console.log(req.headers['x-forwarded-for']);
-  res.end();
+  const ip = getIp(req.headers['x-forwarded-for']);
+  const language = getLanguage(req.headers['accept-language']);
+  console.log(req.headers);
+  res.json({
+    ipaddress: ip,
+    language: language,
+    software: ''
+  });
 });
 
 app.listen(process.env.PORT, () => {
