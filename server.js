@@ -16,15 +16,19 @@ function getLanguage(header) {
   return header.substring(0, header.indexOf(','));
 }
 
+function getSoftware(header) {
+  return header.substring(header.indexOf('(')+1, header.indexOf(')'));
+}
 
 app.get('/api/whoami', (req, res) => {
   const ip = getIp(req.headers['x-forwarded-for']);
   const language = getLanguage(req.headers['accept-language']);
-  console.log(req.headers);
+  const software = getSoftware(req.headers['user-agent']);
+  
   res.json({
     ipaddress: ip,
     language: language,
-    software: ''
+    software: software
   });
 });
 
